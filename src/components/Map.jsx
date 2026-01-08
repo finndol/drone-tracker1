@@ -40,7 +40,6 @@ const Map = ({drones}) => {
     useEffect(() => {
         if(!mapRef.current) return
 
-        console.log('Creating markers')
         // clear old markers
         markersRef.current?.forEach(marker => marker.remove())
         markersRef.current = []
@@ -66,7 +65,7 @@ const Map = ({drones}) => {
     }, [drones])
 
     return (
-        <div id="map-container" ref={mapContainerRef}> </div>
+        <div id="map-container" ref={mapContainerRef} />
     )
 }
 
