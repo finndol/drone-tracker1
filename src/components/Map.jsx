@@ -2,7 +2,6 @@
 import { useRef, useEffect } from "react"
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import DRONES from '../data/drones'
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZmlubmRvbCIsImEiOiJjbGVnOHM4MmcwNDQxM3JteGw1emxmMGExIn0.coHR2EQE8TapTPA3lKlryg'
 
@@ -15,7 +14,7 @@ function getMarkerVariant(drone) {
     return "unknown"
 }
 
-const Map = () => {
+const Map = ({drones}) => {
 
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
@@ -46,7 +45,7 @@ const Map = () => {
         markersRef.current?.forEach(marker => marker.remove())
         markersRef.current = []
 
-        DRONES.forEach(drone => {
+        drones.forEach(drone => {
 
         const varient = getMarkerVariant(drone)
 
@@ -64,7 +63,7 @@ const Map = () => {
             markersRef.current.push(marker)
         })
         
-    }, [DRONES])
+    }, [drones])
 
     return (
         <div id="map-container" ref={mapContainerRef}> </div>

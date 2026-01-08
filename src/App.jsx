@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import Map from './components/Map.jsx'
+import DRONES from "./data/drones.js"
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [drones, setDrones] = useState(DRONES)
 
   return (
     <>
-      <Map />
+      <Map drones={drones}/>
     </>
   )
 }
