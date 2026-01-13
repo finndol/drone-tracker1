@@ -5,7 +5,7 @@ const DRONES = [
     lat: 51.5079,
     lng: -0.1281,
     status: "DELIVERY",
-    batteryPct: 64,
+    batteryPct: 14,
     etaMin: 12,
     capacity: 1,
     rangeKm: 60,
