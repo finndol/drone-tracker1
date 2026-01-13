@@ -7,7 +7,6 @@ import './App.css'
 function App() {
 
   const [drones, setDrones] = useState(DRONES)
-  console.log(`Drones in App.jsx, ${drones}`)
 
   return (
       <main className="app">

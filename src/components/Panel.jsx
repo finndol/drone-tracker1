@@ -7,7 +7,17 @@ import FleetTable from './FleetTable';
 
 export default function Panel({drones}) {
 
-    console.log("Drones in Panel:", drones);
+    function calculateActiveDrones() {
+    return drones.filter(drone => drone.status === "DELIVERY" && drone.batteryPct > 25).length;
+}
+
+function calculateAvailableDrones() {
+    return drones.filter(drone => drone.status === "STANDBY" && drone.batteryPct > 25).length;
+}
+
+function calculateLowBatDrones() {
+    return drones.filter(drone => drone.batteryPct < 25).length
+}
 
     return (
         <div className="panel-wrap"> 
@@ -18,7 +28,7 @@ export default function Panel({drones}) {
                         <img src={activeIcon} />
                         <div className="stat-label text-blue">ACTIVE</div>
                     </div>
-                    <div className="stat-value">14</div>
+                    <div className="stat-value">{calculateActiveDrones()}</div>
                 </div>
 
                 <div className="stat-card stat-ready">
@@ -26,7 +36,7 @@ export default function Panel({drones}) {
                         <img src={readyIcon} />
                         <div className="stat-label is-active">READY</div>
                     </div>
-                    <div className="stat-value">14</div>
+                    <div className="stat-value">{calculateAvailableDrones()}</div>
                 </div>
 
                 <div className="stat-card stat-low">
@@ -34,7 +44,7 @@ export default function Panel({drones}) {
                         <img src={lowIcon} />
                         <div className="stat-label">LOW BAT</div>
                     </div>
-                    <div className="stat-value">14</div>
+                    <div className="stat-value">{calculateLowBatDrones()}</div>
                 </div>
             </div>
 

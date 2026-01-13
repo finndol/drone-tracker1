@@ -98,6 +98,11 @@ button:focus-visible {
 
 }
 
+.panel_title {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+
 .panel_stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -139,31 +144,19 @@ button:focus-visible {
 
 .stat-active {
   border: 1px solid rgba(80, 150, 255, 0.35);
-  background: linear-gradient(
-    180deg,
-    rgba(80, 150, 255, 0.18),
-    rgba(80, 150, 255, 0.05)
-  );
+  background: rgba(61, 169, 255, 0.15);
   color: #8cb4ff;
 }
 
 .stat-ready {
   border: 1px solid rgba(90, 200, 140, 0.35);
-  background: linear-gradient(
-    180deg,
-    rgba(90, 200, 140, 0.18),
-    rgba(90, 200, 140, 0.05)
-  );
+  background: rgba(16, 185, 129, 0.15);
   color: #7de2b8;
 }
 
 .stat-low {
   border: 1px solid rgba(255, 180, 90, 0.35);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 180, 90, 0.18),
-    rgba(255, 180, 90, 0.05)
-  );
+  background: rgba(255, 159, 61, 0.15);
   color: #ffb65c;
 }
 
@@ -196,7 +189,6 @@ button:focus-visible {
 /* Body rows */
 .fleet__body {
   display: grid;
-  gap: 0.25rem;
 }
 
 .fleet__row {
@@ -206,10 +198,13 @@ button:focus-visible {
   align-items: center;
   padding: 0.5rem 0.75rem;
   border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
 }
 
 .fleet__row:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background :rgba(255, 255, 255, 0.08);
 }
 
 .fleet__cell {
@@ -241,6 +236,46 @@ button:focus-visible {
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
+}
+
+.popup-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #000;
+  padding: 0.5rem 1rem;    
+  border-radius: 999px;       
+  font-size: 1rem;   
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap; 
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  animation: popupFadeIn 180ms ease-out forwards;
+}
+
+
+@keyframes popupFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mapboxgl-popup-tip {
+  display: none !important;
+}
+
+.mapboxgl-popup-content,
+.mapboxgl-popup-content-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.mapboxgl-popup-close-button {
+  display: none !important;
 }
 
 /* Status */
@@ -286,38 +321,77 @@ button:focus-visible {
 
 /* Toggle */
 .fleet__toggle {
-  margin-top: 1.75rem;
+  margin-top: 0.5rem;
   width: 100%;
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.95);
-
+  font-size: 0.75rem;
+  text-transform: uppercase;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-
   cursor: pointer;
-  padding: 0.75rem 0.5rem;
+  padding: 0.25rem;
+}
+
+.fleet__toggle:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
 }
 
 .fleet__toggleText {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .fleet__chev {
-  display: inline-block;
-  transform: translateY(1px) rotate(0deg);
-  transition: transform 180ms ease;
-  opacity: 0.9;
-  font-size: 1rem;
+  width: 14px;
+  height: 14px;
+  display: block;      /* kills baseline weirdness */
+  flex: 0 0 14px;      /* prevents stretching */
+  object-fit: contain;
+  transform: translateY(-1px); /* optional micro-nudge */
 }
 
 .fleet__chev.is-open {
   transform: translateY(1px) rotate(180deg);
+}
+
+/* Scroll container (controls expand/collapse) */
+.fleet__scroll {
+  /* collapsed state */
+  max-height: 120px;
+  overflow: hidden;
+  transition: max-height 260ms ease, opacity 200ms ease;
+  opacity: 0.98;
+  will-change: max-height;
+}
+
+/* expanded state */
+.fleet__scroll.is-expanded {
+  max-height: 400px;         /* fixed expanded height */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Optional: nicer scrolling */
+.fleet__scroll.is-expanded {
+  scrollbar-gutter: stable;
+}
+
+.fleet__scroll {
+  position: relative; /* required for absolute overlay */
+}
+
+
+.fleet__scroll.is-expanded::after {
+  opacity: 0;
+  pointer-events: none;
 }
 
 

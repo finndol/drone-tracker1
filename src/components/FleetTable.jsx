@@ -1,11 +1,9 @@
 import { useState } from "react";
 import batteryIcon from "../assets/icons/battery-table.svg"
+import chevron from "../assets/icons/chevron.svg"
 
 export default function FleetTable({ drones = [] }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  console.log("Drones in FleetTable:", drones);
-
 
   return (
     <section className="fleet">
@@ -73,7 +71,7 @@ export default function FleetTable({ drones = [] }) {
           className={`fleet__chev ${isExpanded ? "is-open" : ""}`}
           aria-hidden="true"
         >
-          ▾
+          <img src={chevron} />
         </span>
       </button>
     </section>
@@ -92,8 +90,8 @@ function formatStatus(drone) {
 }
 
 function formatEta(drone) {
-  if (drone.etaMins == null) return "N/A";
-  return `${drone.etaMins} mins`;
+  if (drone.etaMin == null) return "N/A";
+  return `${drone.etaMin} mins`;
 }
 
 function getDotVariant(drone) {
