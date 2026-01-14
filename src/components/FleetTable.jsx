@@ -1,9 +1,15 @@
-import { useState } from "react";
-import batteryIcon from "../assets/icons/battery-table.svg"
-import chevron from "../assets/icons/chevron.svg"
+import { useState, useRef } from "react";
+import batteryIcon from "../assets/icons/battery-table.svg";
+import chevron from "../assets/icons/chevron.svg";
 
-export default function FleetTable({ drones = [] }) {
+export default function FleetTable({ drones = [], onHoverDrone }) {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Stores the active hover timeout
+  const hoverTimeoutRef = useRef(null);
+
+  // Tracks which drone is currently being hovered
+  const hoverIdRef = useRef(null);
 
   return (
     <section className="fleet">
@@ -23,7 +29,35 @@ export default function FleetTable({ drones = [] }) {
           )}
 
           {drones.map((drone) => (
-            <div className="fleet__row" key={drone.id}>
+            <div
+              className="fleet__row"
+              key={drone.id}
+              onMouseEnter={() => {
+                // Cancel any existing delayed hover
+                clearTimeout(hoverTimeoutRef.current);
+
+                // Mark this drone as the active hover target
+                hoverIdRef.current = drone.id;
+
+                // Delay popup display
+                hoverTimeoutRef.current = setTimeout(() => {
+                  // Only show if still hovering this same row
+                  if (hoverIdRef.current === drone.id) {
+                    onHoverDrone?.(drone.id);
+                  }
+                }, 400);
+              }}
+              onMouseLeave={() => {
+                // Cancel delayed hover
+                clearTimeout(hoverTimeoutRef.current);
+
+                // Clear hover state
+                hoverIdRef.current = null;
+
+                // Hide popup immediately
+                onHoverDrone?.(null);
+              }}
+            >
               {/* MODEL */}
               <div className="fleet__cell fleet__model">
                 <span
@@ -42,7 +76,7 @@ export default function FleetTable({ drones = [] }) {
 
               {/* BATTERY */}
               <div className="fleet__cell fleet__bat">
-                <img src={batteryIcon} className="fleet__batIcon" />
+                <img src={batteryIcon} className="fleet__batIcon" alt="" />
                 <span className="fleet__batText">
                   {Math.round(drone.batteryPct ?? 0)}%
                 </span>
@@ -67,11 +101,12 @@ export default function FleetTable({ drones = [] }) {
         <span className="fleet__toggleText">
           {isExpanded ? "VIEW LESS" : "VIEW ALL"}
         </span>
+
         <span
           className={`fleet__chev ${isExpanded ? "is-open" : ""}`}
           aria-hidden="true"
         >
-          <img src={chevron} />
+          <img src={chevron} alt="" />
         </span>
       </button>
     </section>
